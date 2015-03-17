@@ -18,7 +18,6 @@ import java.util.List;
  * Created by Derek Choi on 2015. 3. 11..
  */
 @Service("engine")
-//@Scope("prototype")
 public class AnnotatedSearchEngine implements SearchEngine {
 
     private static final Logger log = LoggerFactory.getLogger(SearchEngineService.class);
