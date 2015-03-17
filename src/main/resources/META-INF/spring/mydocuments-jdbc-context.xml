@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <context:component-scan base-package="net.claztec.document.service" />
+    <context:property-placeholder location="META-INF/data/jdbc.properties" />
+
+    <bean id="dataSouce" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+    <bean id="engine" class="net.claztec.document.service.SearchEngineService">
+        <property name="documentDao" ref="documentDao" />
+    </bean>
+
+    <bean id="documentDao" class="net.claztec.document.data.DocumentRepository" init-method="initialize">
+       <property name="dataSource" ref="dataSouce" />
+    </bean>
+    
+</beans>

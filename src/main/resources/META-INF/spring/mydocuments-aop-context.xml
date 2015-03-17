@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+        <context:component-scan base-package="net.claztec.document.aop" />
+        <aop:aspectj-autoproxy />
+
+        <!-- AOP -->
+        <bean id="beforeLogging" class="net.claztec.document.aop.BeforeLoggingModule" />
+        <bean id="afterLogging" class="net.claztec.document.aop.AfterLoggingModule" />
+        <bean id="aroundLogging" class="net.claztec.document.aop.AroundLoggingModule" />
+        <bean id="throwLogging" class="net.claztec.document.aop.ThrowLoggingModule" />
+        <!--<bean id="cachingModule" class="net.claztec.document.aop.CacheModule" />-->
+
+        <!-- AOP Proxy -->
+        <!--<bean id="engineProxy" class="org.springframework.aop.framework.ProxyFactoryBean">-->
+            <!--<property name="proxyTargetClass" value="true" />-->
+            <!--<property name="target" ref="engine" />-->
+            <!--<property name="interceptorNames">-->
+                <!--<list>-->
+                    <!--<value>afterLogging</value>-->
+                    <!--<value>beforeLogging</value>-->
+                    <!--<value>aroundLogging</value>-->
+                    <!--<value>throwLogging</value>-->
+                    <!--&lt;!&ndash;<value>cachingModule</value>&ndash;&gt;-->
+                <!--</list>-->
+            <!--</property>-->
+        <!--</bean>-->
+
+
+        <bean id="engine" class="net.claztec.document.service.SearchEngineService">
+            <property name="documentDao" ref="documentDao" />
+        </bean>
+
+        <bean id="documentDao" class="net.claztec.document.data.DocumentRepository">
+            <property name="documents">
+                <list>
+                    <ref bean="doc1"></ref>
+                    <ref bean="doc2"></ref>
+                    <ref bean="doc3"></ref>
+                    <ref bean="doc4"></ref>
+                </list>
+            </property>
+        </bean>
+
+        <bean id="typeDao" class="net.claztec.document.data.TypeDataRepository">
+            <property name="types">
+                <map>
+                    <entry key="webType" value-ref="webType" />
+                    <entry key="pdfType" value-ref="pdfType" />
+                    <entry key="noteType" value-ref="noteType" />
+                </map>
+            </property>
+        </bean>
+
+
+        <bean id="doc1" class="net.claztec.document.model.Document">
+            <property name="name" value="Book Template"/>
+            <property name="type" ref="pdfType"/>
+            <property name="location" value="/User/claztec/Documents/Random/Book Template.pdf"/>
+        </bean>
+
+        <bean id="doc2" class="net.claztec.document.model.Document">
+            <property name="name" value="Sample Contract"/>
+            <property name="type">
+                <bean class="net.claztec.document.model.Type">
+                    <property name="name" value="PDF" />
+                    <property name="desc" value="Portable Document Format"/>
+                    <property name="extension" value=".pdf"/>
+                </bean>
+            </property>
+            <property name="location" value="/User/claztec/Documents/Random/Sample Contract.pdf"/>
+        </bean>
+        <bean id="doc3" class="net.claztec.document.model.Document">
+            <property name="name" value="Clustering with RabbitMQ"/>
+            <property name="type" ref="noteType"/>
+            <property name="location" value="/User/claztec/Documents/Random/Clustering with RabbitMQ"/>
+        </bean>
+
+        <bean id="doc4" class="net.claztec.document.model.Document">
+            <property name="name" value="Pro Spring Security Book"/>
+            <property name="type" ref="webType"/>
+            <property name="location" value="/User/claztec/Documents/Random/Pro Spring Security Book"/>
+        </bean>
+
+        <bean id="webType" class="net.claztec.document.model.Type">
+            <property name="name" value="WEB" />
+            <property name="desc" value="Web Link" />
+            <property name="extension" value=".url" />
+        </bean>
+
+        <bean id="noteType" class="net.claztec.document.model.Type">
+            <property name="name" value="NOTE" />
+            <property name="desc" value="Text Notes" />
+            <property name="extension" value=".txt" />
+        </bean>
+
+        <bean id="pdfType" class="net.claztec.document.model.Type">
+            <property name="name" value="PDF" />
+            <property name="desc" value="Portable Document Format" />
+            <property name="extension" value=".pdf" />
+        </bean>
+
+
+</beans>
