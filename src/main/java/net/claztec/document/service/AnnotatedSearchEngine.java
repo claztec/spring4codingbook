@@ -46,9 +46,7 @@ public class AnnotatedSearchEngine implements SearchEngine {
     @Override
     public List<Document> listAll() {
         System.out.println(">>>>>>>> AnnotatedSearchEngin listAll() >>>>>>>>>>>>>>");
-        Document[] documents = documentDao.getAll();
-
-        return Arrays.asList(documents);
+        return documentDao.getAll();
     }
 
     @Override

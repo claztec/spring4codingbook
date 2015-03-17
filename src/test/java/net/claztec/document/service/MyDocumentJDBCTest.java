@@ -33,7 +33,7 @@ public class MyDocumentJDBCTest {
     @Autowired
     private SearchEngine engine;
 
-    private Type webType = new Type("Web", ".url");
+    private Type webType = new Type("WEB", ".url");
 
 
     @Test
@@ -49,7 +49,7 @@ public class MyDocumentJDBCTest {
         assertNotNull(documents);
         assertTrue(documents.size() == 1);
         assertEquals(webType.getName(), documents.get(0).getType().getName());
-        assertEquals(webType.getDesc(), documents.get(0).getType().getDesc());
+
         assertEquals(webType.getExtension(), documents.get(0).getType().getExtension());
 
        log.debug("Found WEB Document: " + documents.get(0));

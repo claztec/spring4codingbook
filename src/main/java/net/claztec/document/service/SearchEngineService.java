@@ -59,7 +59,7 @@ public class SearchEngineService implements SearchEngine {
 
     @Override
     public List<Document> listAll() {
-        return Arrays.asList(documentDao.getAll());
+        return documentDao.getAll();
     }
 
     @Override

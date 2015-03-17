@@ -13,11 +13,11 @@ import java.util.List;
 @Repository("documentDao")
 public class AnnotatedDocumentRepository implements DocumentDao {
     @Override
-    public Document[] getAll() {
+    public List<Document> getAll() {
         return storage();
     }
 
-    private Document[] storage() {
+    private List<Document> storage() {
         List<Document> result = new ArrayList<Document>();
 
         Type type = new Type();
@@ -63,7 +63,7 @@ public class AnnotatedDocumentRepository implements DocumentDao {
 
         result.add(document4);
 
-        return result.toArray(new Document[result.size()]);
+        return result;
 
     }
 

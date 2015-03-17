@@ -22,7 +22,19 @@
     </bean>
 
     <bean id="documentDao" class="net.claztec.document.data.DocumentRepository" init-method="initialize">
-       <property name="dataSource" ref="dataSouce" />
+        <property name="dataSource" ref="dataSouce" />
+        <property name="schema" value="classpath:META-INF/data/schema.sql" />
+        <property name="data" value="classpath:META-INF/data/data.sql" />
+        <property name="queryAll" >
+            <value>
+                select d.documentId, d.name, d.location, d.description as doc_desc,
+                d.typeId, d.created, d.modified,
+                t.name as type_name, t.description as type_desc, t.extension
+                from documents d
+                join types t
+                on d.typeId = t.typeId
+            </value>
+        </property>
     </bean>
     
 </beans>
