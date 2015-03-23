@@ -168,5 +168,11 @@ public class DocumentRepository implements DocumentDao {
 
     }
 
+    @Override
+    public void save(Document document) {
+        log.error("Not Yet Implement");
+
+    }
+
 
 }

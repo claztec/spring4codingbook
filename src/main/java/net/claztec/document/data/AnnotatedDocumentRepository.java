@@ -18,8 +18,8 @@ import java.util.List;
 /**
  * Created by Derek Choi on 2015. 3. 11..
  */
-@Repository("documentDao")
-public class AnnotatedDocumentRepository implements DocumentDao {
+
+public class AnnotatedDocumentRepository  {
     private static final Logger log = LoggerFactory.getLogger(AnnotatedDocumentRepository.class);
 
     private static final String queryAll = "                select d.documentId, d.name, d.location, d.description as doc_desc,\n" +
@@ -29,10 +29,8 @@ public class AnnotatedDocumentRepository implements DocumentDao {
             "                join types t\n" +
             "                on d.typeId = t.typeId";
 
-    @Autowired
     private DataSource dataSource;
 
-    @Override
     public List<Document> getAll() {
         if (log.isDebugEnabled()) {
             log.debug("Start <getAll> Params: ");
@@ -82,6 +80,10 @@ public class AnnotatedDocumentRepository implements DocumentDao {
 
         return result;
 
+    }
+
+    public void save(Document document) {
+        log.error("Not Yet Implement");
     }
 
 }

@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface DocumentDao {
     public List<Document> getAll();
+
+    void save(Document document);
 }
