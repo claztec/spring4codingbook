@@ -1,13 +1,16 @@
 package net.claztec.document.service;
 
+import net.claztec.document.jms.JMSProducer;
 import net.claztec.document.model.Document;
 import net.claztec.document.model.Type;
 
 import net.claztec.document.test.profile.CustomProfile;
 import net.claztec.document.utils.XmlUtils;
+import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +31,14 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:META-INF/spring/mydocuments-context.xml")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MyDocumentTest {
-
 
 
     //Based on the META-INF/data/jms.txt - only one record
     private static final int MAX_ALL_DOCS = 5;
     private static final int MAX_WEB_DOCS = 2;
     private static final String DOCUMENT_ID = "df569fa4-a513-4252-9810-818cade184ca";
-    @Autowired
 
 
     private static final Logger log = LoggerFactory.getLogger(MyDocumentTest.class);
@@ -48,9 +50,11 @@ public class MyDocumentTest {
     private Type webType;
 
 
+    @Autowired
+    private JMSProducer jmsProducer;
+
 
     @Test
-//    @Ignore
     public void testXmlUtils() {
         log.debug("Testing XML Utils...");
         Type type = new Type();
@@ -73,6 +77,7 @@ public class MyDocumentTest {
     }
 
     @Test
+    @Ignore
     public void testUsingSpringTest() {
         log.debug("Using Spring Test fixtures on Unix:");
         List<Document> documents = engine.findByType(webType);
@@ -106,7 +111,13 @@ public class MyDocumentTest {
     }
 
     @Test
-    public void testSpringJMS() throws InterruptedException {
+    public void testSpringJMS_1() {
+        log.debug("Testing Spring JMS Producer...");
+        jmsProducer.send();
+    }
+
+    @Test
+    public void testSpringJMS_2() throws InterruptedException {
         log.debug("Testing Spring JMS Listener/Insert...");
         assertNotNull(engine);
 

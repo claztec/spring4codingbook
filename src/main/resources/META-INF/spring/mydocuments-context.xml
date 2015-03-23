@@ -22,6 +22,11 @@
 
     <bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" p:brokerURL="tcp://localhost:61616" />
 
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg name="connectionFactory" ref="activemqConnectionFactory" />
+        <property name="defaultDestinationName" value="mydocumentsQueue" />
+    </bean>
+
     <jms:listener-container connection-factory="activemqConnectionFactory" acknowledge="auto" container-type="default">
         <jms:listener destination="mydocumentsQueue" ref="JMSConsumer" method="onMessage" />
     </jms:listener-container>

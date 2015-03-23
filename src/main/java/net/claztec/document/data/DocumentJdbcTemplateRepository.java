@@ -71,7 +71,7 @@ public class DocumentJdbcTemplateRepository implements DocumentDao {
         try {
             updateDocument = jdbcTemplate.queryForObject(find, new Object[] {id}, new DocumentRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             log.debug("@@ id not found @@");
         }
 
