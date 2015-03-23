@@ -66,4 +66,9 @@ public class SearchEngineService implements SearchEngine {
     public List<Document> findByLocation(String location) {
         throw new UnsupportedOperationException("findByLocation not yet implemented.");
     }
+
+    @Override
+    public Document findById(String documentId) {
+        return null;
+    }
 }

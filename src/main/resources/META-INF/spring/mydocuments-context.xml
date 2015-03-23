@@ -6,12 +6,15 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
        xsi:schemaLocation="http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
        http://www.springframework.org/schema/jms
        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+       http://www.springframework.org/schema/rabbit
+       http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd
        http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -30,6 +33,15 @@
     <jms:listener-container connection-factory="activemqConnectionFactory" acknowledge="auto" container-type="default">
         <jms:listener destination="mydocumentsQueue" ref="JMSConsumer" method="onMessage" />
     </jms:listener-container>
+
+    <rabbit:connection-factory id="rabbitConnectionFactory" host="localhost" />
+    <rabbit:admin connection-factory="rabbitConnectionFactory" />
+    <rabbit:template id="rabbitTemplate" connection-factory="rabbitConnectionFactory" routing-key="mydocumentsQueue" />
+    <rabbit:queue name="mydocumentsQueue" />
+    <rabbit:listener-container connection-factory="rabbitConnectionFactory">
+        <rabbit:listener ref="rabbitmqConsumer" queues="mydocumentsQueue" />
+    </rabbit:listener-container>
+
 
     <jdbc:embedded-database id="dataSource">
         <jdbc:script location="classpath:META-INF/data/schema.sql" />

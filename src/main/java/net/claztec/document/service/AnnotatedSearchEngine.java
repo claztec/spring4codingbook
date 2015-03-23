@@ -52,4 +52,9 @@ public class AnnotatedSearchEngine implements SearchEngine {
     public List<Document> findByLocation(String location) {
         return null;
     }
+
+    @Override
+    public Document findById(String documentId) {
+        return documentDao.findById(documentId);
+    }
 }

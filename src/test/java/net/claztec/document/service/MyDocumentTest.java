@@ -1,5 +1,6 @@
 package net.claztec.document.service;
 
+import net.claztec.document.amqp.RabbitMQProducer;
 import net.claztec.document.jms.JMSProducer;
 import net.claztec.document.model.Document;
 import net.claztec.document.model.Type;
@@ -127,6 +128,19 @@ public class MyDocumentTest {
 
         Type documentType = new Type("WEB", ".url");
         assertEquals(MAX_WEB_DOCS, engine.findByType(documentType).size());
+    }
+
+    @Autowired
+    private RabbitMQProducer rabbitMQProducer;
+
+    @Test
+    public void testSpringRabbitMQ_1() {
+        log.debug("Testing RabbitMQ producer...");
+        assertNotNull(rabbitMQProducer);
+
+        Document document = engine.findById(DOCUMENT_ID);
+        assertNotNull(document);
+        rabbitMQProducer.send(document);
     }
 
 }

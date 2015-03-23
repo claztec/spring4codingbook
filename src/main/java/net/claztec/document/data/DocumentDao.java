@@ -11,4 +11,6 @@ public interface DocumentDao {
     public List<Document> getAll();
 
     void save(Document document);
+
+    public Document findById(String documentId);
 }

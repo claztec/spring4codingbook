@@ -174,5 +174,10 @@ public class DocumentRepository implements DocumentDao {
 
     }
 
+    @Override
+    public Document findById(String documentId) {
+        return null;
+    }
+
 
 }

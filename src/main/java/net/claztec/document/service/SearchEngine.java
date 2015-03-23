@@ -12,4 +12,6 @@ public interface SearchEngine {
     public List<Document> findByType(Type documentType);
     public List<Document> listAll();
     public List<Document> findByLocation(String location);
+
+    Document findById(String documentId);
 }
