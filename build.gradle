@@ -1,7 +1,19 @@
-apply plugin: 'java'
-apply plugin: 'jetty'
-apply plugin: 'war'
+buildscript {
+    repositories {
+        jcenter()
+    }
 
+    dependencies {
+        classpath (group: 'com.sahlbach.gradle', name: 'gradle-jetty-eclipse-plugin', version: '1.9.+')
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'jettyEclipse'
 
 sourceCompatibility = 1.5
 version = '1.0'
@@ -19,6 +31,7 @@ dependencies {
     compile 'org.springframework:spring-webmvc:4.1.5.RELEASE'
     compile 'org.springframework:spring-jms:4.1.5.RELEASE'
     compile 'org.springframework.amqp:spring-rabbit:1.4.3.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-web:1.2.2.RELEASE'
     compile 'aspectj:aspectjrt:1.5.4'
     compile 'org.aspectj:aspectjweaver:1.8.5'
     compile 'org.slf4j:slf4j-api:1.7.10'
@@ -36,5 +49,9 @@ dependencies {
 test {
     testLogging {
         events 'started', 'passed'
+    }
+
+    onOutput { descriptor, event ->
+        logger.lifecycle(event.message)
     }
 }

@@ -71,16 +71,18 @@ public class Document {
         this.modified = modified;
     }
 
-    @Override
-    public String toString() {
-        return "Document{" +
-                "documentId='" + documentId + '\'' +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", location='" + location + '\'' +
-                ", description='" + description + '\'' +
-                ", created=" + created +
-                ", modified=" + modified +
-                '}';
+
+    public String toString(){
+        StringBuilder builder = new StringBuilder("Document(");
+        builder.append("id: ");
+        builder.append(documentId);
+        builder.append(", name: ");
+        builder.append(name);
+        builder.append(", type: ");
+        builder.append(type);
+        builder.append(", location: ");
+        builder.append(location);
+        builder.append(")");
+        return builder.toString();
     }
 }

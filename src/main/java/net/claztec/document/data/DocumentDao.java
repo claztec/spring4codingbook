@@ -10,7 +10,11 @@ import java.util.List;
 public interface DocumentDao {
     public List<Document> getAll();
 
-    void save(Document document);
+    Document save(String id, Document document);
 
     public Document findById(String documentId);
+
+    Document removeById(String id);
+
+    void save(Document document);
 }

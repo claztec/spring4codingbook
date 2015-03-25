@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * Created by claztec on 15. 3. 23.
  */
 
-@Component("rabbitmqProducer")
+//@Component("rabbitmqProducer")
 public class RabbitMQProducer {
 
     @Autowired

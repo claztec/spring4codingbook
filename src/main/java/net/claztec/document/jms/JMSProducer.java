@@ -17,7 +17,7 @@ import java.util.Scanner;
 /**
  * Created by claztec on 15. 3. 23.
  */
-@Component("jmsProducer")
+//@Component("jmsProducer")
 public class JMSProducer {
 
     @Value("classpath:META-INF/data/jms.txt")

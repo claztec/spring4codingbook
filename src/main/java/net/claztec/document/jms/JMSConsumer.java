@@ -14,7 +14,7 @@ import javax.jms.TextMessage;
 /**
  * Created by claztec on 15. 3. 20.
  */
-@Component
+//@Component
 public class JMSConsumer implements MessageListener {
 
     @Autowired

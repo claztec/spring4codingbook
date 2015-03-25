@@ -48,55 +48,54 @@
         <jdbc:script location="classpath:META-INF/data/data.sql" />
     </jdbc:embedded-database>
 
-    <bean id="query" class="java.lang.String">
+
+    <bean id="sql" class="java.util.HashMap">
         <constructor-arg>
-            <value>
-                select d.documentId, d.name, d.location, d.description as doc_desc,
-                d.typeId, d.created, d.modified,
-                t.name as type_name, t.description as type_desc, t.extension
-                from documents d
-                join types t
-                on d.typeId = t.typeId
-            </value>
+            <map>
+                <entry key="query">
+                    <value>
+                        select d.documentId, d.name, d.location, d.description as doc_desc,
+                        d.typeId, d.created, d.modified,
+                        t.name as type_name, t.description as type_desc, t.extension
+                        from documents d
+                        join types t
+                        on d.typeId = t.typeId
+                    </value>
+                </entry>
+                <entry key="find">
+                    <value>
+                        select d.documentId, d.name, d.location, d.description as doc_desc,
+                        d.typeId, d.created, d.modified,
+                        t.name as type_name, t.description as type_desc, t.extension from
+                        documents d
+                        join types t
+                        on d.typeId = t.typeId
+                        where d.documentId = ?
+                    </value>
+                </entry>
+                <entry key="insert">
+                    <value>
+                        insert into documents (documentId,name,location,description, typeId, created, modified)
+                        values (?,?,?,?,?,?,?)
+                    </value>
+                </entry>
+                <entry key="update">
+                    <value>
+                        update documents
+                        set name = ?,
+                        location = ?,
+                        description = ?,
+                        typeId = ?,
+                        modified = ?
+                        where documentId = ?
+                    </value>
+                </entry>
+                <entry key="delete">
+                    <value>
+                        delete from documents where documentId = ?
+                    </value>
+                </entry>
+            </map>
         </constructor-arg>
     </bean>
-
-    <bean id="find" class="java.lang.String">
-        <constructor-arg>
-            <value>
-                select d.documentId, d.name, d.location, d.description as doc_desc,
-                d.typeId, d.created, d.modified,
-                t.name as type_name, t.description as type_desc, t.extension from
-                documents d
-                join types t
-                on d.typeId = t.typeId
-                where d.documentId = ?
-            </value>
-        </constructor-arg>
-    </bean>
-    <bean id="insert" class="java.lang.String">
-        <constructor-arg>
-            <value>
-                insert into documents (documentId,name,location,description, typeId, created, modified)
-                values (?,?,?,?,?,?,?)
-            </value>
-        </constructor-arg>
-    </bean>
-    <bean id="update" class="java.lang.String">
-        <constructor-arg>
-            <value>
-                update documents
-                set name = ?,
-                location = ?,
-                description = ?,
-                typeId = ?,
-                modified = ?
-                where documentId = ?
-            </value>
-        </constructor-arg>
-    </bean>
-
-
-
-
 </beans>

@@ -30,6 +30,7 @@ public class SearchController {
         }
         model.addAttribute("docs", documentDao.getAll());
 //        return "search/all2.html";
+//        return "search/all.jspx";
         return "search/all2.jspx";
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * Created by claztec on 15. 3. 23.
  */
 
-@Component("rabbitmqConsumer")
+//@Component("rabbitmqConsumer")
 public class RabbitMQConsumer implements MessageListener{
 
     public static final Logger log = LoggerFactory.getLogger(RabbitMQConsumer.class);
