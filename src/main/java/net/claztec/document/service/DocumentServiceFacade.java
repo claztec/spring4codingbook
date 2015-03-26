@@ -2,9 +2,11 @@ package net.claztec.document.service;
 
 import net.claztec.document.data.DocumentDao;
 import net.claztec.document.model.Document;
+import net.claztec.document.model.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,5 +50,19 @@ public class DocumentServiceFacade implements DocumentService {
         saveDocument(documentId, document);
 
         return true;
+    }
+
+    @Override
+    public List<Document> findByType(Type webType) {
+        List<Document> list = new ArrayList<Document>();
+
+        List<Document> documents = documentDao.getAll();
+        for (Document document : documents) {
+            if (document.getType().getName().equals(webType.getName())) {
+                list.add(document);
+            }
+        }
+
+        return list;
     }
 }

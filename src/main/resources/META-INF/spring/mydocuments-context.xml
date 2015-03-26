@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:jms="http://www.springframework.org/schema/jms"
        xmlns:rabbit="http://www.springframework.org/schema/rabbit"
@@ -15,32 +16,16 @@
        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
        http://www.springframework.org/schema/rabbit
        http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task-4.0.xsd
        http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+    <task:annotation-driven />
+
     <context:component-scan base-package="net.claztec.document" />
-
-
-    <bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" p:brokerURL="tcp://localhost:61616" />
-
-    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <constructor-arg name="connectionFactory" ref="activemqConnectionFactory" />
-        <property name="defaultDestinationName" value="mydocumentsQueue" />
-    </bean>
-
-    <jms:listener-container connection-factory="activemqConnectionFactory" acknowledge="auto" container-type="default">
-        <jms:listener destination="mydocumentsQueue" ref="JMSConsumer" method="onMessage" />
-    </jms:listener-container>
-
-    <rabbit:connection-factory id="rabbitConnectionFactory" host="localhost" />
-    <rabbit:admin connection-factory="rabbitConnectionFactory" />
-    <rabbit:template id="rabbitTemplate" connection-factory="rabbitConnectionFactory" routing-key="mydocumentsQueue" />
-    <rabbit:queue name="mydocumentsQueue" />
-    <rabbit:listener-container connection-factory="rabbitConnectionFactory">
-        <rabbit:listener ref="rabbitmqConsumer" queues="mydocumentsQueue" />
-    </rabbit:listener-container>
 
 
     <jdbc:embedded-database id="dataSource">
@@ -48,6 +33,21 @@
         <jdbc:script location="classpath:META-INF/data/data.sql" />
     </jdbc:embedded-database>
 
+
+    <context:property-placeholder location="classpath:META-INF/data/email.properties" />
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${email.host}" />
+        <!--<property name="port" value="${email.port}" />-->
+        <property name="username" value="${email.username}" />
+        <property name="password" value="${email.password}" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+    </bean>
 
     <bean id="sql" class="java.util.HashMap">
         <constructor-arg>

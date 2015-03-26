@@ -1,6 +1,7 @@
 package net.claztec.document.service;
 
 import net.claztec.document.amqp.RabbitMQProducer;
+import net.claztec.document.email.EmailService;
 import net.claztec.document.jms.JMSProducer;
 import net.claztec.document.model.Document;
 import net.claztec.document.model.Type;
@@ -25,6 +26,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -50,32 +53,6 @@ public class MyDocumentTest {
     @Autowired
     private Type webType;
 
-
-    @Autowired
-    private JMSProducer jmsProducer;
-
-
-    @Test
-    public void testXmlUtils() {
-        log.debug("Testing XML Utils...");
-        Type type = new Type();
-        type.setTypeId("4980d2e4-a424-4ff4-a0b2-476039682f43");
-        type.setName("WEB");
-        type.setDesc("Web Link");
-        type.setExtension(".url");
-        Document document = new Document();
-        document.setDocumentId(UUID.randomUUID().toString());
-        document.setName("Apress Books");
-        document.setLocation("http://www.apress.com");
-        document.setDescription("Apress Books");
-        document.setType(type);
-        document.setCreated(new Date());
-        document.setModified(new Date());
-        String string = XmlUtils.toXML(document);
-        log.debug("\n" + string);
-        Document other = XmlUtils.fromXML(string,Document.class);
-        assertNotNull(other);
-    }
 
     @Test
     @Ignore
@@ -111,36 +88,62 @@ public class MyDocumentTest {
         }
     }
 
-    @Test
-    public void testSpringJMS_1() {
-        log.debug("Testing Spring JMS Producer...");
-        jmsProducer.send();
-    }
-
-    @Test
-    public void testSpringJMS_2() throws InterruptedException {
-        log.debug("Testing Spring JMS Listener/Insert...");
-        assertNotNull(engine);
-
-        Thread.sleep(5000);
-
-        assertEquals(MAX_ALL_DOCS, engine.listAll().size());
-
-        Type documentType = new Type("WEB", ".url");
-        assertEquals(MAX_WEB_DOCS, engine.findByType(documentType).size());
-    }
-
     @Autowired
-    private RabbitMQProducer rabbitMQProducer;
+    EmailService email;
 
     @Test
-    public void testSpringRabbitMQ_1() {
-        log.debug("Testing RabbitMQ producer...");
-        assertNotNull(rabbitMQProducer);
+//    @Repeat(5)
+    public void testEmail() {
+        log.debug("Testing Email...");
+        assertNotNull(log);
 
-        Document document = engine.findById(DOCUMENT_ID);
-        assertNotNull(document);
-        rabbitMQProducer.send(document);
+        long start = new Date().getTime();
+        email.send("claztec@gmail.com", "claztec@hanmail.net", "테스트 메일",  "샘플 이메일.\n 메일 발송이 잘 되나.");
+        long end = new Date().getTime();
+        long time = (end - start) / 1000;
+        log.debug("Sending email done. Took: " + time + " seconds.");
+    }
+
+    @Test
+//    @Repeat(5)
+    public void testAsyncEmail() throws InterruptedException, ExecutionException {
+        log.debug("Testing Email...");
+        assertNotNull(log);
+
+        long start = new Date().getTime();
+        Future result = email.sendAsync("claztec@gmail.com", "claztec@hanmail.net", "Async 테스트 메일", "샘플 이메일.\n 메일 발송이 잘 되나. \n 비동기로 메일 발송.");
+//        log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RESULT " + result.get() + " >>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        System.out.println(">>>>>> RESULT: " + result.get());
+        long end = new Date().getTime();
+        long time = (end - start) / 1000;
+        log.debug("Sending email done. Took: " + time + " seconds.");
+//        Thread.sleep(10000);
+
+    }
+
+    @Test
+    public void testInfinity() {
+        long start = new Date().getTime();
+        email.infinityLoop("THREAD-1");
+        long end = new Date().getTime();
+        long time = (end - start) / 1000;
+        log.debug("Infinity loop. Took: " + time + " seconds.");
+    }
+
+    @Test
+    public void testAsyncInfinity() throws InterruptedException, ExecutionException {
+        long start = new Date().getTime();
+        Future result = email.asyncInfinityLoop("THREAD-1");
+        System.out.println(">>>>>> RESULT: " + result.get());
+        long end = new Date().getTime();
+        long time = (end - start) / 1000;
+        log.debug("Infinity loop. Took: " + time + " seconds.");
+
+    }
+
+    @Test
+    public void testScheduler() throws InterruptedException {
+        Thread.sleep(45000);
     }
 
 }

@@ -25,15 +25,13 @@ public class DocumentController {
 
     @RequestMapping(method=RequestMethod.GET)
     @ResponseBody
-//    public @ResponseBody List<Document> getDocuments() {
-    public Object getDocuments() {
+    public List<Document> getDocuments() {
         System.out.println("@@@@ getDocuments @@@@");
         List<Document> documents = documentFacade.getAllDocuments();
         for (Document tmp : documents) {
             log.debug(tmp.getDocumentId());
         }
 
-//        return "<h1>Hello World</h1>";
         return documents;
     }
 

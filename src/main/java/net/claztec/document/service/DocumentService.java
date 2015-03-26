@@ -1,6 +1,7 @@
 package net.claztec.document.service;
 
 import net.claztec.document.model.Document;
+import net.claztec.document.model.Type;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface DocumentService {
     public Document saveDocument(String id, Document document);
     public Document removeDocumentById(String id);
     public boolean updateLocationFromDocumentId(String documentId, String location);
+
+    List<Document> findByType(Type webType);
 }
