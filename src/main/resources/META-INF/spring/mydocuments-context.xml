@@ -34,7 +34,15 @@
     </jdbc:embedded-database>
 
 
-    <context:property-placeholder location="classpath:META-INF/data/email.properties" />
+    <context:property-placeholder order="1" ignore-unresolvable="true" location="classpath:META-INF/data/email.properties" />
+    <context:property-placeholder order="2" ignore-unresolvable="true" location="classpath:META-INF/data/twitter.properties" />
+
+    <bean id="tweet" class="org.springframework.social.twitter.api.impl.TwitterTemplate">
+        <constructor-arg name="consumerKey" value="${twitter.apiKey}" />
+        <constructor-arg name="consumerSecret" value="${twitter.apiSecret}" />
+        <constructor-arg name="accessToken" value="${twitter.accessToken}" />
+        <constructor-arg name="accessTokenSecret" value="${twitter.accessTokenSecret}" />
+    </bean>
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${email.host}" />

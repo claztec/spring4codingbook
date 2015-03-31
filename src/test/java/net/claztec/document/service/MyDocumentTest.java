@@ -6,6 +6,7 @@ import net.claztec.document.jms.JMSProducer;
 import net.claztec.document.model.Document;
 import net.claztec.document.model.Type;
 
+import net.claztec.document.social.DocumentTweet;
 import net.claztec.document.test.profile.CustomProfile;
 import net.claztec.document.utils.XmlUtils;
 import org.junit.FixMethodOrder;
@@ -144,6 +145,17 @@ public class MyDocumentTest {
     @Test
     public void testScheduler() throws InterruptedException {
         Thread.sleep(45000);
+    }
+
+    @Autowired
+    DocumentTweet documentTweet;
+
+    @Test
+    public void testTweet() {
+        log.debug("Testing Spring Social....");
+        assertNotNull(documentTweet);
+        documentTweet.tweet("Playing with Spring Social!!");
+
     }
 
 }

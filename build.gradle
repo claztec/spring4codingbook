@@ -34,6 +34,8 @@ dependencies {
     compile 'org.springframework.amqp:spring-rabbit:1.4.3.RELEASE'
     compile 'org.springframework.boot:spring-boot-starter-web:1.2.2.RELEASE'
     compile 'org.springframework.integration:spring-integration-mail:4.1.2.RELEASE'
+//    compile 'org.springframework.social:spring-social:1.1.0.RELEASE'
+    compile 'org.springframework.social:spring-social-twitter:1.1.0.RELEASE'
     compile 'aspectj:aspectjrt:1.5.4'
     compile 'org.aspectj:aspectjweaver:1.8.5'
     compile 'org.slf4j:slf4j-api:1.7.10'
